@@ -1,6 +1,7 @@
 import * as React from "react";
 import { storiesOf } from "@storybook/react";
 import * as faker from "faker";
+import "../src/styles.css";
 import {
   ScrollView,
   List,
@@ -8,7 +9,10 @@ import {
   Skeleton,
   Avatar,
   IconChevronRight,
-  useTheme
+  useTheme,
+  Layer,
+  IconPlus,
+  IconButton
 } from "sancho";
 
 import { StackItem, Stack } from "../src";
@@ -40,51 +44,32 @@ function ListDetail() {
   }
 
   return (
-    <div>
-      <button onClick={next}>nextt</button>
-      <Stack
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        padding: "2rem"
+      }}
+    >
+      <Layer
+        elevation="sm"
         style={{
-          height: "400px",
+          height: "700px",
           width: "400px",
-          border: "1px solid #eee",
-          borderRadius: "1.5rem"
+          overflow: "hidden"
         }}
-        items={[
-          {
-            title: <StackTitle title="Hello world" />,
-            content: (
-              <StackItem>
-                <ScrollView overflowY>
-                  <List>
-                    {items.map(item => (
-                      <ListItem
-                        key={item.uid}
-                        onPress={() => setIndex(index + 1)}
-                        contentBefore={<Avatar name={item.name} />}
-                        primary={item.name}
-                        secondary={item.description}
-                        contentAfter={
-                          <IconChevronRight color={theme.colors.text.muted} />
-                        }
-                      />
-                    ))}
-                  </List>
-                </ScrollView>
-              </StackItem>
-            )
-          },
-          {
-            title: <StackTitle title="Another pane" />,
-            content: (
-              <StackItem>
-                <div
-                  style={{
-                    flexDirection: "column",
-                    display: "flex",
-                    height: "100%"
-                  }}
-                >
-                  <ScrollView style={{ flex: 1 }} overflowY>
+      >
+        <Stack
+          style={{
+            height: "100%",
+            width: "100%"
+          }}
+          items={[
+            {
+              title: <StackTitle title="Hello world" />,
+              content: (
+                <StackItem>
+                  <ScrollView overflowY>
                     <List>
                       {items.map(item => (
                         <ListItem
@@ -100,14 +85,59 @@ function ListDetail() {
                       ))}
                     </List>
                   </ScrollView>
-                </div>
-              </StackItem>
-            )
-          }
-        ]}
-        onIndexChange={onChange}
-        index={index}
-      />
+                </StackItem>
+              )
+            },
+            {
+              title: (
+                <StackTitle
+                  title="Another pane"
+                  contentAfter={
+                    <IconButton
+                      variant="ghost"
+                      intent="primary"
+                      label="Add"
+                      icon={<IconPlus />}
+                    />
+                  }
+                />
+              ),
+              content: (
+                <StackItem>
+                  <div
+                    style={{
+                      flexDirection: "column",
+                      display: "flex",
+                      height: "100%"
+                    }}
+                  >
+                    <ScrollView style={{ flex: 1 }} overflowY>
+                      <List>
+                        {items.map(item => (
+                          <ListItem
+                            key={item.uid}
+                            onPress={() => setIndex(index + 1)}
+                            contentBefore={<Avatar name={item.name} />}
+                            primary={item.name}
+                            secondary={item.description}
+                            contentAfter={
+                              <IconChevronRight
+                                color={theme.colors.text.muted}
+                              />
+                            }
+                          />
+                        ))}
+                      </List>
+                    </ScrollView>
+                  </div>
+                </StackItem>
+              )
+            }
+          ]}
+          onIndexChange={onChange}
+          index={index}
+        />
+      </Layer>
     </div>
   );
 }

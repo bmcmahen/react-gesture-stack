@@ -36,12 +36,16 @@ export interface StackProps extends React.HTMLAttributes<HTMLDivElement> {
   index: number;
   onIndexChange: (index: number) => void;
   items: StackItemList[];
+  disableNav?: boolean;
+  navHeight?: number;
 }
 
 export const Stack: React.FunctionComponent<StackProps> = ({
   style,
   children,
   index,
+  disableNav,
+  navHeight = 50,
   items,
   onIndexChange,
   ...other
@@ -130,33 +134,35 @@ export const Stack: React.FunctionComponent<StackProps> = ({
       {...bind}
       {...other}
     >
-      <div
-        style={{
-          height: "50px",
-          zIndex: 10,
-          position: "relative",
-          background: "white",
-          borderBottom: "1px solid #eee"
-        }}
-      >
-        {springs.map((props, i) => {
-          return (
-            <StackContext.Provider
-              key={i}
-              value={{
-                index: i,
-                dragging,
-                active: i === index,
-                opacity: props.opacity,
-                transform: props.left.to(x => clamp(x)),
-                changeIndex: onIndexChange
-              }}
-            >
-              {items[i].title}
-            </StackContext.Provider>
-          );
-        })}
-      </div>
+      {!disableNav && (
+        <div
+          className="Stack__nav"
+          style={{
+            height: `${navHeight}px`,
+            zIndex: 10,
+            position: "relative"
+          }}
+        >
+          {springs.map((props, i) => {
+            return (
+              <StackContext.Provider
+                key={i}
+                value={{
+                  index: i,
+                  dragging,
+                  navHeight,
+                  active: i === index,
+                  opacity: props.opacity,
+                  transform: props.left.to(x => clamp(x)),
+                  changeIndex: onIndexChange
+                }}
+              >
+                {items[i].title}
+              </StackContext.Provider>
+            );
+          })}
+        </div>
+      )}
       <div
         style={{
           position: "relative",
@@ -172,6 +178,7 @@ export const Stack: React.FunctionComponent<StackProps> = ({
               value={{
                 index: i,
                 dragging,
+                navHeight,
                 active: i === index,
                 opacity: props.opacity,
                 transform: props.left.to(x => clamp(x)),

@@ -23,9 +23,14 @@ export function StackTitle({
   contentBefore,
   style
 }: StackTitleProps) {
-  const { index, active, changeIndex, opacity, transform } = React.useContext(
-    StackContext
-  );
+  const {
+    navHeight,
+    index,
+    active,
+    changeIndex,
+    opacity,
+    transform
+  } = React.useContext(StackContext);
 
   if (!transform || !opacity) {
     throw new Error("StackTitle must be used within a Stack component");
@@ -33,6 +38,7 @@ export function StackTitle({
 
   return (
     <div
+      className="StackTitle"
       aria-hidden={!active}
       style={{
         pointerEvents: active ? "auto" : "none",
@@ -43,24 +49,24 @@ export function StackTitle({
         right: 0
       }}
     >
-      <animated.div
+      <div
         style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          height: "50px",
+          height: navHeight + "px",
           boxSizing: "border-box",
           padding: "0.5rem",
-          ...style,
-          opacity,
-          transform: transform.to(x => `translateX(${x * 0.7}%)`)
+          ...style
         }}
       >
-        <div
+        <animated.div
           className="StackTitle__Content-before"
           style={{
             flex: "0 0 100px",
-            ...ellipsis
+            ...ellipsis,
+            opacity,
+            transform: transform.to(x => `translateX(${x * 0.7}%)`)
           }}
         >
           {index > 0 && !contentBefore && (
@@ -82,29 +88,33 @@ export function StackTitle({
             </button>
           )}
           {contentBefore}
-        </div>
-        <div
+        </animated.div>
+        <animated.div
           className="StackTitle__heading"
           style={{
             margin: "0.25rem",
             textOverflow: "ellipsis",
             whiteSpace: "nowrap",
-            overflow: "hidden"
+            overflow: "hidden",
+            opacity,
+            transform: transform.to(x => `translateX(${x * 0.85}%)`)
           }}
         >
           {title}
-        </div>
-        <div
+        </animated.div>
+        <animated.div
           className="StackTitle__content-after"
           style={{
             margin: "0.25rem",
             flex: "0 0 100px",
-            ...ellipsis
+            textAlign: "right",
+            ...ellipsis,
+            opacity
           }}
         >
           {contentAfter}
-        </div>
-      </animated.div>
+        </animated.div>
+      </div>
     </div>
   );
 }
