@@ -1,5 +1,13 @@
 import * as React from "react";
+import { SpringValue } from "react-spring";
 
-export const StackContext = React.createContext({
-  index: 0
+interface StackContextType {
+  index: number;
+  active: boolean;
+  transform?: SpringValue<string>;
+}
+
+export const StackContext = React.createContext<StackContextType>({
+  index: 0,
+  active: false
 });
