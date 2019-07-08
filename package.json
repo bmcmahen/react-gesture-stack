@@ -27,6 +27,7 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.3.3",
     "@storybook/react": "^5.0.5",
+    "@types/faker": "^4.1.5",
     "@types/jest": "^24.0.11",
     "@types/storybook__react": "^4.0.1",
     "awesome-typescript-loader": "^5.2.1",
@@ -35,6 +36,7 @@
     "babel-loader": "^8.0.5",
     "babel-plugin-require-context-hook": "^1.0.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "faker": "^4.1.0",
     "jest": "^24.5.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -50,6 +52,7 @@
     "rollup-plugin-sourcemaps": "^0.4.2",
     "rollup-plugin-typescript2": "^0.20.1",
     "rollup-plugin-uglify": "^6.0.2",
+    "sancho": "^3.2.1",
     "ts-jest": "^24.0.1",
     "typescript": "^3.4.1",
     "webpack": "^4.29.6"

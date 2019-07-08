@@ -2,12 +2,17 @@ import * as React from "react";
 import { StackContext } from "./StackContext";
 import { animated } from "react-spring";
 
+export interface StackItemProps extends React.HTMLAttributes<HTMLDivElement> {
+  heading?: React.ReactNode;
+}
+
 export function StackItem({
+  heading,
   style,
   className = "",
   ...other
-}: React.HTMLAttributes<HTMLDivElement>) {
-  const { index, active, transform } = React.useContext(StackContext);
+}: StackItemProps) {
+  const { index, dragging, active, transform } = React.useContext(StackContext);
 
   if (!transform) {
     throw new Error("Stack must be used as a child of StackManager");
@@ -20,6 +25,7 @@ export function StackItem({
   return (
     <animated.div
       className={cx}
+      aria-hidden={!active}
       style={{
         background: "white",
         position: "absolute",

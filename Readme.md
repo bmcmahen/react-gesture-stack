@@ -1,4 +1,4 @@
-# react-stack-view
+# react-gesture-stack
 
 animated stacks
 

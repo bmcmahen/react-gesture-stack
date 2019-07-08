@@ -4,10 +4,15 @@ import { SpringValue } from "react-spring";
 interface StackContextType {
   index: number;
   active: boolean;
+  dragging: boolean;
+  opacity?: SpringValue<number>;
   transform?: SpringValue<string>;
+  changeIndex: (index: number) => void;
 }
 
 export const StackContext = React.createContext<StackContextType>({
   index: 0,
-  active: false
+  dragging: false,
+  active: false,
+  changeIndex: () => {}
 });

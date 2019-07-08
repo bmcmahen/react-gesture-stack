@@ -11,39 +11,41 @@ import { useMeasure } from "./use-measure";
 function getAnimationValues(i: number, currentIndex: number) {
   // current
   if (i === currentIndex) {
-    return { left: 0, immediate: false };
+    return { left: 0, immediate: false, opacity: 1 };
   }
 
   // next
   else if (i > currentIndex) {
-    return { left: 100, immediate: false };
+    return { left: 100, immediate: false, opacity: 0 };
   }
 
   // previous
-  else {
-    return { left: -50, immediate: false };
-  }
+  return { left: -50, immediate: false, opacity: 0 };
 }
 
 /**
  * Stack manager
  */
 
-interface Props {
+export interface StackProps extends React.HTMLAttributes<HTMLDivElement> {
   index: number;
-  onChange: (index: number) => void;
+  onIndexChange: (index: number) => void;
 }
 
-export const Stack: React.FunctionComponent<Props> = ({
+export const Stack: React.FunctionComponent<StackProps> = ({
+  style,
   children,
   index,
-  onChange
+  onIndexChange,
+  ...other
 }) => {
   const ref = React.useRef(null);
   const count = React.Children.count(children);
   const childArray = React.Children.toArray(children);
   const bounds = useMeasure(ref);
+  const [dragging, setDragging] = React.useState(false);
 
+  // set default positions
   const [springs, set] = useSprings(count, i => {
     return getAnimationValues(i, index);
   });
@@ -60,14 +62,16 @@ export const Stack: React.FunctionComponent<Props> = ({
     const [x] = delta;
     const xp = (x / width) * 100;
 
+    setDragging(false);
+
     // go back if force is great enouggh
     if (direction[0] === 1 && velocity > 0.25) {
-      return onChange(index - 1);
+      return onIndexChange(index - 1);
     }
 
     // go back if distance > 50%
     if (xp > 50) {
-      return onChange(index - 1);
+      return onIndexChange(index - 1);
     }
 
     // otherwise, reset indexes
@@ -80,6 +84,7 @@ export const Stack: React.FunctionComponent<Props> = ({
       // only engage on a swipe back and if there is something
       // to swipe back towards
       if (initialDirection[0] === 1 && index > 0) {
+        setDragging(true);
         return true;
       }
 
@@ -94,12 +99,12 @@ export const Stack: React.FunctionComponent<Props> = ({
 
       set(i => {
         if (i === index) {
-          return { immediate: true, left: xp };
+          return { immediate: true, left: xp, opacity: (100 - xp) / 100 };
         }
 
         if (i === index - 1) {
           const dx = 100 - xp;
-          return { immediate: true, left: (dx / 2) * -1 };
+          return { immediate: true, left: (dx / 2) * -1, opacity: xp / 100 };
         }
 
         return getAnimationValues(i, index);
@@ -112,12 +117,11 @@ export const Stack: React.FunctionComponent<Props> = ({
       ref={ref}
       style={{
         overflow: "hidden",
-        width: "400px",
-        height: "400px",
         position: "relative",
-        border: "1px solid black"
+        ...style
       }}
       {...bind}
+      {...other}
     >
       {springs.map((props, i) => {
         return (
@@ -125,8 +129,11 @@ export const Stack: React.FunctionComponent<Props> = ({
             key={i}
             value={{
               index: i,
+              dragging,
               active: i === index,
-              transform: props.left.to(x => `translateX(${clamp(x)}%)`)
+              opacity: props.opacity,
+              transform: props.left.to(x => `translateX(${clamp(x)}%)`),
+              changeIndex: onIndexChange
             }}
           >
             {childArray[i]}
