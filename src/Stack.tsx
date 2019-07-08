@@ -27,21 +27,27 @@ function getAnimationValues(i: number, currentIndex: number) {
  * Stack manager
  */
 
+interface StackItemList {
+  title: React.ReactNode;
+  content: React.ReactNode;
+}
+
 export interface StackProps extends React.HTMLAttributes<HTMLDivElement> {
   index: number;
   onIndexChange: (index: number) => void;
+  items: StackItemList[];
 }
 
 export const Stack: React.FunctionComponent<StackProps> = ({
   style,
   children,
   index,
+  items,
   onIndexChange,
   ...other
 }) => {
   const ref = React.useRef(null);
-  const count = React.Children.count(children);
-  const childArray = React.Children.toArray(children);
+  const count = items.length;
   const bounds = useMeasure(ref);
   const [dragging, setDragging] = React.useState(false);
 
@@ -117,29 +123,66 @@ export const Stack: React.FunctionComponent<StackProps> = ({
       ref={ref}
       style={{
         overflow: "hidden",
-        position: "relative",
+        display: "flex",
+        flexDirection: "column",
         ...style
       }}
       {...bind}
       {...other}
     >
-      {springs.map((props, i) => {
-        return (
-          <StackContext.Provider
-            key={i}
-            value={{
-              index: i,
-              dragging,
-              active: i === index,
-              opacity: props.opacity,
-              transform: props.left.to(x => `translateX(${clamp(x)}%)`),
-              changeIndex: onIndexChange
-            }}
-          >
-            {childArray[i]}
-          </StackContext.Provider>
-        );
-      })}
+      <div
+        style={{
+          height: "50px",
+          zIndex: 10,
+          position: "relative",
+          background: "white",
+          borderBottom: "1px solid #eee"
+        }}
+      >
+        {springs.map((props, i) => {
+          return (
+            <StackContext.Provider
+              key={i}
+              value={{
+                index: i,
+                dragging,
+                active: i === index,
+                opacity: props.opacity,
+                transform: props.left.to(x => clamp(x)),
+                changeIndex: onIndexChange
+              }}
+            >
+              {items[i].title}
+            </StackContext.Provider>
+          );
+        })}
+      </div>
+      <div
+        style={{
+          position: "relative",
+          overflow: "hidden",
+          background: "white",
+          flex: 1
+        }}
+      >
+        {springs.map((props, i) => {
+          return (
+            <StackContext.Provider
+              key={i}
+              value={{
+                index: i,
+                dragging,
+                active: i === index,
+                opacity: props.opacity,
+                transform: props.left.to(x => clamp(x)),
+                changeIndex: onIndexChange
+              }}
+            >
+              {items[i].content}
+            </StackContext.Provider>
+          );
+        })}
+      </div>
     </div>
   );
 };

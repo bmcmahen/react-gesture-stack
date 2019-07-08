@@ -2,16 +2,9 @@ import * as React from "react";
 import { StackContext } from "./StackContext";
 import { animated } from "react-spring";
 
-export interface StackItemProps extends React.HTMLAttributes<HTMLDivElement> {
-  heading?: React.ReactNode;
-}
+export interface StackItemProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export function StackItem({
-  heading,
-  style,
-  className = "",
-  ...other
-}: StackItemProps) {
+export function StackItem({ style, className = "", ...other }: StackItemProps) {
   const { index, opacity, active, transform } = React.useContext(StackContext);
 
   if (!transform || !opacity) {
@@ -34,7 +27,7 @@ export function StackItem({
         right: 0,
         bottom: 0,
         boxShadow: opacity.to(x => `0 0 12px -2px rgba(160,160,160,${x})`),
-        transform,
+        transform: transform.to(x => `translateX(${x}%)`),
         ...style
       }}
       {...other}

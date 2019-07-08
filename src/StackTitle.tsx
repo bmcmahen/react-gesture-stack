@@ -23,7 +23,7 @@ export function StackTitle({
   contentBefore,
   style
 }: StackTitleProps) {
-  const { index, changeIndex, opacity, transform } = React.useContext(
+  const { index, active, changeIndex, opacity, transform } = React.useContext(
     StackContext
   );
 
@@ -32,66 +32,79 @@ export function StackTitle({
   }
 
   return (
-    <animated.div
+    <div
+      aria-hidden={!active}
       style={{
-        zIndex: 2,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        height: "50px",
-        padding: "0.5rem",
-        ...style,
-        opacity
+        pointerEvents: active ? "auto" : "none",
+        zIndex: 10,
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0
       }}
     >
-      <div
-        className="StackTitle__Content-before"
+      <animated.div
         style={{
-          flex: "0 0 100px",
-          ...ellipsis
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          height: "50px",
+          boxSizing: "border-box",
+          padding: "0.5rem",
+          ...style,
+          opacity,
+          transform: transform.to(x => `translateX(${x * 0.7}%)`)
         }}
       >
-        {index > 0 && !contentBefore && (
-          <button
-            onClick={() => {
-              changeIndex(index - 1);
-            }}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              border: "none",
-              background: "none",
-              margin: "0.25rem"
-            }}
-            className="StackTitle__button-back"
-          >
-            <IconChevronLeft size={24} color="currentColor" />
-            {backTitle}
-          </button>
-        )}
-        {contentBefore}
-      </div>
-      <div
-        className="StackTitle__heading"
-        style={{
-          margin: "0.25rem",
-          textOverflow: "ellipsis",
-          whiteSpace: "nowrap",
-          overflow: "hidden"
-        }}
-      >
-        {title}
-      </div>
-      <div
-        className="StackTitle__content-after"
-        style={{
-          margin: "0.25rem",
-          flex: "0 0 100px",
-          ...ellipsis
-        }}
-      >
-        {contentAfter}
-      </div>
-    </animated.div>
+        <div
+          className="StackTitle__Content-before"
+          style={{
+            flex: "0 0 100px",
+            ...ellipsis
+          }}
+        >
+          {index > 0 && !contentBefore && (
+            <button
+              onClick={() => {
+                changeIndex(index - 1);
+              }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                border: "none",
+                background: "none",
+                margin: "0.25rem"
+              }}
+              className="StackTitle__button-back"
+            >
+              <IconChevronLeft size={24} color="currentColor" />
+              {backTitle}
+            </button>
+          )}
+          {contentBefore}
+        </div>
+        <div
+          className="StackTitle__heading"
+          style={{
+            margin: "0.25rem",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            overflow: "hidden"
+          }}
+        >
+          {title}
+        </div>
+        <div
+          className="StackTitle__content-after"
+          style={{
+            margin: "0.25rem",
+            flex: "0 0 100px",
+            ...ellipsis
+          }}
+        >
+          {contentAfter}
+        </div>
+      </animated.div>
+    </div>
   );
 }

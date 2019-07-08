@@ -6,7 +6,7 @@ interface StackContextType {
   active: boolean;
   dragging: boolean;
   opacity?: SpringValue<number>;
-  transform?: SpringValue<string>;
+  transform?: SpringValue<number>;
   changeIndex: (index: number) => void;
 }
 
