@@ -12,9 +12,9 @@ export function StackItem({
   className = "",
   ...other
 }: StackItemProps) {
-  const { index, dragging, active, transform } = React.useContext(StackContext);
+  const { index, opacity, active, transform } = React.useContext(StackContext);
 
-  if (!transform) {
+  if (!transform || !opacity) {
     throw new Error("Stack must be used as a child of StackManager");
   }
 
@@ -33,6 +33,7 @@ export function StackItem({
         left: 0,
         right: 0,
         bottom: 0,
+        boxShadow: opacity.to(x => `0 0 12px -2px rgba(160,160,160,${x})`),
         transform,
         ...style
       }}

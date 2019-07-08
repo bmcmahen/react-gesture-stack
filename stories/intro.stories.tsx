@@ -138,10 +138,30 @@ function ListDetail() {
           style={{
             // boxShadow:
             //   "rgba(52, 58, 64, 0.15) 0px 1px 10px 0px, rgba(52, 58, 64, 0.1) 0px 6px 12px 0px, rgba(52, 58, 64, 0.12) 0px 6px 15px -2px",
-            background: "#08e"
+            background: "white"
           }}
         >
-          <StackTitle title="Details with a very long title than you should accept" />
+          <div
+            style={{ flexDirection: "column", display: "flex", height: "100%" }}
+          >
+            <StackTitle title="Details with a very long title than you should accept" />
+            <ScrollView style={{ flex: 1 }} overflowY>
+              <List>
+                {items.map(item => (
+                  <ListItem
+                    key={item.uid}
+                    onPress={() => setIndex(index + 1)}
+                    contentBefore={<Avatar name={item.name} />}
+                    primary={item.name}
+                    secondary={item.description}
+                    contentAfter={
+                      <IconChevronRight color={theme.colors.text.muted} />
+                    }
+                  />
+                ))}
+              </List>
+            </ScrollView>
+          </div>
         </StackItem>
         <StackItem
           style={{
