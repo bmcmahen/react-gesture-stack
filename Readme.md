@@ -10,7 +10,9 @@
 [![npm package](https://img.shields.io/npm/v/react-gesture-stack/latest.svg)](https://www.npmjs.com/package/react-gesture-stack)
 [![Follow on Twitter](https://img.shields.io/twitter/follow/benmcmahen.svg?style=social&logo=twitter)](https://twitter.com/intent/follow?screen_name=benmcmahen)
 
-React-gesture-stack provides an iOS stack-like interface for use on the web. It supports gestures to "go back" in the stack.
+React-gesture-stack provides an iOS stack-like interface for use on the web. It supports gestures to "go back" in the stack. View the above example [on CodeSandbox](https://codesandbox.io/embed/damp-monad-ukvcu).
+
+This was originally built for use in [Sancho-UI](https://github.com/bmcmahen/sancho).
 
 ## Install
 
