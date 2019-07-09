@@ -77,8 +77,8 @@ function Simple() {
 | index \*         | number               |               | The index of stack item to show                         |
 | onIndexChange \* | (i: number) => void; |               | A callback requesting the active stack item change      |
 | items \*         | StackItemList[]      |               | A list of stack items to render (see the above example) |
-| disableNav       | boolean              | true          | Hide the top navigation pane                            |
-| navHeight        | number               | 50            | The height of the navigation pane                       |
+| disableNav       | boolean              | false          | Hide the top navigation pane                            |
+| navHeight        | number               | 50            | The height of the navigation pane (in px)                      |
 
 ### StackItem
 
