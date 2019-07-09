@@ -66,6 +66,35 @@ function Simple() {
 }
 ```
 
+## API
+
+### Stack
+
+| Name             | Type                 | Default Value | Description                                             |
+| ---------------- | -------------------- | ------------- | ------------------------------------------------------- |
+| index \*         | number               |               | The index of stack item to show                         |
+| onIndexChange \* | (i: number) => void; |               | A callback requesting the active stack item change      |
+| items \*         | StackItemList[]      |               | A list of stack items to render (see the above example) |
+| disableNav       | boolean              | true          | Hide the top navigation pane                            |
+| navHeight        | number               | 50            | The height of the navigation pane                       |
+
+### StackItem
+
+| Name     | Type       | Default Value | Description               |
+| -------- | ---------- | ------------- | ------------------------- |
+| style    | object     |               | Optional style attributes |
+| children | React.Node |               | Content of the stack item |
+
+### StackTitle
+
+| Name          | Type       | Default Value | Description                                                                  |
+| ------------- | ---------- | ------------- | ---------------------------------------------------------------------------- |
+| title         | React.Node |               | The title of the stack item                                                  |
+| backTitle     | string     | "Back"        | The title of the back button                                                 |
+| backTitle     | string     |               | The title of the back button                                                 |
+| contentAfter  | React.Node |               | Content that appears to the right of the title                               |
+| contentBefore | React.Node |               | Content that appears to the left of the title (and replaces the back button) |
+
 ## License
 
 MIT
