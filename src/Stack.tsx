@@ -3,6 +3,7 @@ import { useGestureResponder, StateType } from "react-gesture-responder";
 import { StackContext } from "./StackContext";
 import { useSprings } from "react-spring";
 import { useMeasure } from "./use-measure";
+import { RemoveScroll } from "react-remove-scroll";
 
 /**
  * Get position of stack items
@@ -38,6 +39,7 @@ export interface StackProps extends React.HTMLAttributes<HTMLDivElement> {
   items: StackItemList[];
   disableNav?: boolean;
   navHeight?: number;
+  disableScroll?: boolean;
 }
 
 export const Stack: React.FunctionComponent<StackProps> = ({
@@ -45,6 +47,7 @@ export const Stack: React.FunctionComponent<StackProps> = ({
   children,
   index,
   disableNav,
+  disableScroll = true,
   navHeight = 50,
   items,
   onIndexChange,
@@ -123,24 +126,56 @@ export const Stack: React.FunctionComponent<StackProps> = ({
   });
 
   return (
-    <div
-      ref={ref}
-      style={{
-        overflow: "hidden",
-        display: "flex",
-        flexDirection: "column",
-        ...style
-      }}
-      {...bind}
-      {...other}
-    >
-      {!disableNav && (
+    <React.Fragment>
+      <RemoveScroll enabled={dragging && disableScroll}>
+        <span />
+      </RemoveScroll>
+      <div
+        ref={ref}
+        style={{
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
+          ...style
+        }}
+        {...bind}
+        {...other}
+      >
+        {!disableNav && (
+          <div
+            className="Stack__nav"
+            style={{
+              height: `${navHeight}px`,
+              zIndex: 10,
+              position: "relative"
+            }}
+          >
+            {springs.map((props, i) => {
+              return (
+                <StackContext.Provider
+                  key={i}
+                  value={{
+                    index: i,
+                    dragging,
+                    navHeight,
+                    active: i === index,
+                    opacity: props.opacity,
+                    transform: props.left.to(x => clamp(x)),
+                    changeIndex: onIndexChange
+                  }}
+                >
+                  {items[i].title}
+                </StackContext.Provider>
+              );
+            })}
+          </div>
+        )}
         <div
-          className="Stack__nav"
           style={{
-            height: `${navHeight}px`,
-            zIndex: 10,
-            position: "relative"
+            position: "relative",
+            overflow: "hidden",
+            background: "white",
+            flex: 1
           }}
         >
           {springs.map((props, i) => {
@@ -157,40 +192,13 @@ export const Stack: React.FunctionComponent<StackProps> = ({
                   changeIndex: onIndexChange
                 }}
               >
-                {items[i].title}
+                {items[i].content}
               </StackContext.Provider>
             );
           })}
         </div>
-      )}
-      <div
-        style={{
-          position: "relative",
-          overflow: "hidden",
-          background: "white",
-          flex: 1
-        }}
-      >
-        {springs.map((props, i) => {
-          return (
-            <StackContext.Provider
-              key={i}
-              value={{
-                index: i,
-                dragging,
-                navHeight,
-                active: i === index,
-                opacity: props.opacity,
-                transform: props.left.to(x => clamp(x)),
-                changeIndex: onIndexChange
-              }}
-            >
-              {items[i].content}
-            </StackContext.Provider>
-          );
-        })}
       </div>
-    </div>
+    </React.Fragment>
   );
 };
 
