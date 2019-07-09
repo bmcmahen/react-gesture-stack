@@ -3,9 +3,10 @@ import { StackContext } from "./StackContext";
 import { animated } from "react-spring";
 import { IconChevronLeft } from "./ChevronLeft";
 
-interface StackTitleProps {
+export interface StackTitleProps {
   title?: React.ReactNode;
   style?: React.CSSProperties;
+  backButton?: React.ReactNode;
   backTitle?: React.ReactNode;
   contentBefore?: React.ReactNode;
   contentAfter?: React.ReactNode;
@@ -15,13 +16,14 @@ const ellipsis = {
   textOverflow: "ellipsis",
   whiteSpace: "nowrap",
   overflow: "hidden"
-} as any;
+} as any; // eh?
 
 export function StackTitle({
   title,
   backTitle = "Back",
   contentAfter,
   contentBefore,
+  backButton,
   style
 }: StackTitleProps) {
   const {
@@ -70,24 +72,26 @@ export function StackTitle({
             transform: transform.to(x => `translateX(${x * 0.7}%)`)
           }}
         >
-          {index > 0 && !contentBefore && (
-            <button
-              onClick={() => {
-                changeIndex(index - 1);
-              }}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                border: "none",
-                background: "none",
-                margin: "0.25rem"
-              }}
-              className="StackTitle__button-back"
-            >
-              <IconChevronLeft size={24} color="currentColor" />
-              {backTitle}
-            </button>
-          )}
+          {index > 0 &&
+            !contentBefore &&
+            (backButton || (
+              <button
+                onClick={() => {
+                  changeIndex(index - 1);
+                }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  border: "none",
+                  background: "none",
+                  margin: "0.25rem"
+                }}
+                className="StackTitle__button-back"
+              >
+                <IconChevronLeft size={24} color="currentColor" />
+                {backTitle}
+              </button>
+            ))}
           {contentBefore}
         </animated.div>
         <animated.div

@@ -14,11 +14,16 @@ import {
   IconButton
 } from "sancho";
 
-import { StackItem, Stack } from "../src";
+import { StackItem, Stack, StackContext } from "../src";
 import { StackTitle } from "../src/StackTitle";
 
 function Simple() {
   const [index, setIndex] = React.useState(0);
+  const { changeIndex } = React.useContext(StackContext);
+
+  function goback() {
+    return setIndex(index - 1);
+  }
 
   return (
     <Stack
@@ -35,7 +40,12 @@ function Simple() {
           )
         },
         {
-          title: <StackTitle title="Second title" />,
+          title: (
+            <StackTitle
+              backButton={<button onClick={goback}>BACK</button>}
+              title="Second title"
+            />
+          ),
           content: (
             <StackItem>
               <button onClick={() => setIndex(index + 1)}>View 3</button>
