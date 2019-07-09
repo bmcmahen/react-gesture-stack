@@ -91,7 +91,6 @@ function Simple() {
 | ------------- | ---------- | ------------- | ---------------------------------------------------------------------------- |
 | title         | React.Node |               | The title of the stack item                                                  |
 | backTitle     | string     | "Back"        | The title of the back button                                                 |
-| backTitle     | string     |               | The title of the back button                                                 |
 | contentAfter  | React.Node |               | Content that appears to the right of the title                               |
 | contentBefore | React.Node |               | Content that appears to the left of the title (and replaces the back button) |
 
