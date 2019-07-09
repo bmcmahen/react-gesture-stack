@@ -26,6 +26,8 @@ yarn add react-gesture-stack react-gesture-responder
 
 ```jsx
 import { Stack, StackItem, StackTitle } from "react-gesture-stack";
+// optional styles
+import "react-gesture-stack/src/styles.css";
 
 function Simple() {
   const [index, setIndex] = React.useState(0);
