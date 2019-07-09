@@ -18,6 +18,44 @@ import {
 import { StackItem, Stack } from "../src";
 import { StackTitle } from "../src/StackTitle";
 
+function Simple() {
+  const [index, setIndex] = React.useState(0);
+
+  return (
+    <Stack
+      onIndexChange={i => setIndex(i)}
+      index={index}
+      style={{ width: "400px", height: "600px" }}
+      items={[
+        {
+          title: <StackTitle title="First title" />,
+          content: (
+            <StackItem>
+              <button onClick={() => setIndex(index + 1)}>View 2</button>
+            </StackItem>
+          )
+        },
+        {
+          title: <StackTitle title="Second title" />,
+          content: (
+            <StackItem>
+              <button onClick={() => setIndex(index + 1)}>View 3</button>
+            </StackItem>
+          )
+        },
+        {
+          title: <StackTitle title="Third title" />,
+          content: (
+            <StackItem>
+              <div>No more!</div>
+            </StackItem>
+          )
+        }
+      ]}
+    />
+  );
+}
+
 function getUser() {
   faker.seed(0);
 
@@ -60,6 +98,7 @@ function ListDetail() {
         }}
       >
         <Stack
+          navHeight={60}
           style={{
             height: "100%",
             width: "100%"
@@ -71,18 +110,27 @@ function ListDetail() {
                 <StackItem>
                   <ScrollView overflowY>
                     <List>
-                      {items.map(item => (
-                        <ListItem
-                          key={item.uid}
-                          onPress={() => setIndex(index + 1)}
-                          contentBefore={<Avatar name={item.name} />}
-                          primary={item.name}
-                          secondary={item.description}
-                          contentAfter={
-                            <IconChevronRight color={theme.colors.text.muted} />
-                          }
-                        />
-                      ))}
+                      <ListItem
+                        onPress={() => setIndex(index + 1)}
+                        primary="All"
+                        contentAfter={
+                          <IconChevronRight color={theme.colors.text.muted} />
+                        }
+                      />
+                      <ListItem
+                        onPress={() => setIndex(index + 1)}
+                        primary="Family"
+                        contentAfter={
+                          <IconChevronRight color={theme.colors.text.muted} />
+                        }
+                      />
+                      <ListItem
+                        onPress={() => setIndex(index + 1)}
+                        primary="Friends"
+                        contentAfter={
+                          <IconChevronRight color={theme.colors.text.muted} />
+                        }
+                      />
                     </List>
                   </ScrollView>
                 </StackItem>
@@ -91,7 +139,7 @@ function ListDetail() {
             {
               title: (
                 <StackTitle
-                  title="Another pane"
+                  title="Family"
                   contentAfter={
                     <IconButton
                       variant="ghost"
@@ -132,6 +180,23 @@ function ListDetail() {
                   </div>
                 </StackItem>
               )
+            },
+            {
+              title: <StackTitle title="I'm in a tree!" />,
+              content: (
+                <StackItem>
+                  <div
+                    style={{
+                      flexDirection: "column",
+                      display: "flex",
+                      height: "100%",
+                      backgroundImage:
+                        "url(https://images.unsplash.com/photo-1562519776-b232435b73c1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80)",
+                      backgroundSize: "cover"
+                    }}
+                  />
+                </StackItem>
+              )
             }
           ]}
           onIndexChange={onChange}
@@ -142,4 +207,6 @@ function ListDetail() {
   );
 }
 
-storiesOf("Hello", module).add("List detail", () => <ListDetail />);
+storiesOf("Hello", module)
+  .add("List detail", () => <ListDetail />)
+  .add("simple", () => <Simple />);
