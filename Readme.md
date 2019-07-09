@@ -63,3 +63,7 @@ function Simple() {
   );
 }
 ```
+
+## License
+
+MIT
