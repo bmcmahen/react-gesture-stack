@@ -95,6 +95,7 @@ function Simple() {
 | backTitle     | string     | "Back"        | The title of the back button                                                 |
 | contentAfter  | React.Node |               | Content that appears to the right of the title                               |
 | contentBefore | React.Node |               | Content that appears to the left of the title (and replaces the back button) |
+| backButton | React.Node | | Render a custom back button. You're responsible for listening to click handlers and updating the current index|
 
 ## License
 
