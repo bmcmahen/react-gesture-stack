@@ -17,7 +17,7 @@ React-gesture-stack provides an iOS stack-like interface for use on the web. It 
 Install `react-gesture-stack` and its peer dependency `react-gesture-responder` using yarn or npm.
 
 ```
-yarn add react-gesture-stack
+yarn add react-gesture-stack react-gesture-responder
 ```
 
 ## Basic usage
