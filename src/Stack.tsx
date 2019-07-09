@@ -29,7 +29,7 @@ function getAnimationValues(i: number, currentIndex: number) {
  */
 
 interface StackItemList {
-  title: React.ReactNode;
+  title?: React.ReactNode;
   content: React.ReactNode;
 }
 

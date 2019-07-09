@@ -2,9 +2,16 @@ import * as React from "react";
 import { StackContext } from "./StackContext";
 import { animated } from "react-spring";
 
-export interface StackItemProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface StackItemProps extends React.HTMLAttributes<HTMLDivElement> {
+  generateShadow?: (x: number) => string;
+}
 
-export function StackItem({ style, className = "", ...other }: StackItemProps) {
+export function StackItem({
+  style,
+  generateShadow,
+  className = "",
+  ...other
+}: StackItemProps) {
   const { index, opacity, active, transform } = React.useContext(StackContext);
 
   if (!transform || !opacity) {
@@ -26,7 +33,11 @@ export function StackItem({ style, className = "", ...other }: StackItemProps) {
         left: 0,
         right: 0,
         bottom: 0,
-        boxShadow: opacity.to(x => `0 0 12px -2px rgba(160,160,160,${x})`),
+        boxShadow: opacity.to(x =>
+          generateShadow
+            ? generateShadow(x)
+            : `0 0 12px -2px rgba(160,160,160,${x})`
+        ),
         transform: transform.to(x => `translateX(${x}%)`),
         ...style
       }}

@@ -47,7 +47,7 @@ function Simple() {
             />
           ),
           content: (
-            <StackItem>
+            <StackItem generateShadow={x => `-8px -8px 8px rgba(0,0,0,${x})`}>
               <button onClick={() => setIndex(index + 1)}>View 3</button>
             </StackItem>
           )
