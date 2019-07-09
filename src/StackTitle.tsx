@@ -3,8 +3,9 @@ import { StackContext } from "./StackContext";
 import { animated } from "react-spring";
 import { IconChevronLeft } from "./ChevronLeft";
 
-interface StackTitleProps extends React.HTMLAttributes<HTMLDivElement> {
-  heading?: React.ReactNode;
+interface StackTitleProps {
+  title?: React.ReactNode;
+  style?: React.CSSProperties;
   backTitle?: React.ReactNode;
   contentBefore?: React.ReactNode;
   contentAfter?: React.ReactNode;
