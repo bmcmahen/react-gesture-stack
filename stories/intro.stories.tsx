@@ -92,7 +92,7 @@ function ListDetail() {
       <Layer
         elevation="sm"
         style={{
-          height: "700px",
+          height: "500px",
           width: "400px",
           overflow: "hidden"
         }}
@@ -105,7 +105,7 @@ function ListDetail() {
           }}
           items={[
             {
-              title: <StackTitle title="Hello world" />,
+              title: <StackTitle title="Contacts" />,
               content: (
                 <StackItem>
                   <ScrollView overflowY>
