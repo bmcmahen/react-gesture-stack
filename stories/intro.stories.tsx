@@ -6,7 +6,6 @@ import {
   ScrollView,
   List,
   ListItem,
-  Skeleton,
   Avatar,
   IconChevronRight,
   useTheme,
@@ -108,7 +107,7 @@ function ListDetail() {
               title: <StackTitle title="Contacts" />,
               content: (
                 <StackItem>
-                  <ScrollView overflowY>
+                  <div style={{ flex: 1, overflowX: "scroll" }}>
                     <List>
                       <ListItem
                         onPress={() => setIndex(index + 1)}
@@ -132,7 +131,7 @@ function ListDetail() {
                         }
                       />
                     </List>
-                  </ScrollView>
+                  </div>
                 </StackItem>
               )
             },
@@ -159,7 +158,7 @@ function ListDetail() {
                       height: "100%"
                     }}
                   >
-                    <ScrollView style={{ flex: 1 }} overflowY>
+                    <div style={{ flex: 1, overflowX: "scroll" }}>
                       <List>
                         {items.map(item => (
                           <ListItem
@@ -176,7 +175,7 @@ function ListDetail() {
                           />
                         ))}
                       </List>
-                    </ScrollView>
+                    </div>
                   </div>
                 </StackItem>
               )
