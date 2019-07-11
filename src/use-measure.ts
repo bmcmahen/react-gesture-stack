@@ -24,9 +24,15 @@ export function useMeasure(ref: React.RefObject<HTMLDivElement | null>) {
   );
 
   React.useEffect(() => {
-    if (ref.current) observer.observe(ref.current);
+    if (ref.current) {
+      // i don't know why, but sometimes our resize observer callback isn't
+      // called upon initial creation. So I'm doing this just for safety.
+      const { left, top, width, height } = ref.current.getBoundingClientRect();
+      setBounds({ left, top, width, height });
+      observer.observe(ref.current);
+    }
     return () => observer.disconnect();
-  }, [observer, ref]);
+  }, [observer, ref, setBounds]);
 
   return bounds;
 }

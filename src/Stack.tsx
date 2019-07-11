@@ -12,16 +12,16 @@ import { RemoveScroll } from "react-remove-scroll";
 function getAnimationValues(i: number, currentIndex: number) {
   // current
   if (i === currentIndex) {
-    return { left: 0, immediate: false, opacity: 1 };
+    return { left: 0, immediate: false, opacity: 1, overlay: 0 };
   }
 
   // next
   else if (i > currentIndex) {
-    return { left: 100, immediate: false, opacity: 0 };
+    return { left: 100, immediate: false, opacity: 0, overlay: 0 };
   }
 
   // previous
-  return { left: -50, immediate: false, opacity: 0 };
+  return { left: -50, immediate: false, opacity: 0, overlay: 1 };
 }
 
 /**
@@ -110,14 +110,29 @@ export const Stack: React.FunctionComponent<StackProps> = ({
       const [x] = delta;
       const xp = (x / width) * 100;
 
+      // prevent over dragging to the left
+      if (x < 0) return;
+
       set(i => {
+        // animate our current pane
         if (i === index) {
-          return { immediate: true, left: xp, opacity: (100 - xp) / 100 };
+          return {
+            immediate: true,
+            left: xp,
+            opacity: (100 - xp) / 100,
+            overlay: 0
+          };
         }
 
+        // animate our previous pane
         if (i === index - 1) {
           const dx = 100 - xp;
-          return { immediate: true, left: (dx / 2) * -1, opacity: xp / 100 };
+          return {
+            immediate: true,
+            left: (dx / 2) * -1,
+            opacity: xp / 100,
+            overlay: (100 - xp) / 100
+          };
         }
 
         return getAnimationValues(i, index);
@@ -158,7 +173,9 @@ export const Stack: React.FunctionComponent<StackProps> = ({
                     index: i,
                     dragging,
                     navHeight,
+                    activeIndex: index,
                     active: i === index,
+                    overlay: props.overlay,
                     opacity: props.opacity,
                     transform: props.left.to(x => clamp(x)),
                     changeIndex: onIndexChange
@@ -184,9 +201,11 @@ export const Stack: React.FunctionComponent<StackProps> = ({
                 key={i}
                 value={{
                   index: i,
+                  activeIndex: index,
                   dragging,
                   navHeight,
                   active: i === index,
+                  overlay: props.overlay,
                   opacity: props.opacity,
                   transform: props.left.to(x => clamp(x)),
                   changeIndex: onIndexChange
