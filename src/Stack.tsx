@@ -96,7 +96,11 @@ export const Stack: React.FunctionComponent<StackProps> = ({
     onMoveShouldSet: ({ initialDirection }) => {
       // only engage on a swipe back and if there is something
       // to swipe back towards
-      if (initialDirection[0] === 1 && index > 0) {
+
+      const isHorizontal =
+        Math.abs(initialDirection[0]) > Math.abs(initialDirection[1]);
+
+      if (isHorizontal && initialDirection[0] > 0 && index > 0) {
         setDragging(true);
         return true;
       }
