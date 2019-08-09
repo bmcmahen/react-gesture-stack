@@ -3,7 +3,7 @@ import { useGestureResponder, StateType } from "react-gesture-responder";
 import { StackContext } from "./StackContext";
 import { useSprings } from "react-spring";
 import { useMeasure } from "./use-measure";
-import { RemoveScroll } from "react-remove-scroll";
+import useScrollLock from "use-scroll-lock";
 
 /**
  * Get position of stack items
@@ -57,6 +57,8 @@ export const Stack: React.FunctionComponent<StackProps> = ({
   const count = items.length;
   const bounds = useMeasure(ref);
   const [dragging, setDragging] = React.useState(false);
+
+  useScrollLock(dragging && disableScroll);
 
   // set default positions
   const [springs, set] = useSprings(count, i => {
@@ -146,9 +148,6 @@ export const Stack: React.FunctionComponent<StackProps> = ({
 
   return (
     <React.Fragment>
-      <RemoveScroll enabled={dragging && disableScroll}>
-        <span />
-      </RemoveScroll>
       <div
         ref={ref}
         style={{
